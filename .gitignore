@@ -1,0 +1,13 @@
+*.mp4
+
+*.docx
+
+*.png
+
+JavaDoc/
+
+Submission*folder/
+
+WebApp/node_modules/
+
+WebApp/public/images/

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <title>Home</title>
+    <link rel="stylesheet" href="/CSS/styles.css">
+
+    <!-- Link to JavaScript for Vue Library -->
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+
+    <script src="client.js"></script>
+    <!-- Link to JavaScript for Vue Router Library -->
+    <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+</head>
+<div id="pageWrapper">
+    <header>
+
+        <!--Header section; navigation bar, logo, login form-->
+        <div class="logo">
+            <img src="images/logo.png" alt="LOGO">
+        </div>
+    </header>
+
+    <!-- Vue app div -->
+    <div class="app" id="app">
+        <div id="searchDiv">
+            <div id="searchBar">
+                <div>
+                    <input type="text" v-model="searchInput" placeholder="Title, author, genre..." name="search"
+                        id="search" autocomplete="off">
+                    <input type="image" v-on:click="getBooksAxios" id="searchButton" src="images/search.png">
+
+                </div>
+            </div>
+            <div id="description">
+                <div id="descriptionPara">
+                    <p>Are you looking for the cheapest possible price for your favourite books? Well look no further!
+                        Books R Us are dedicated to finding you the cheapest prices across a range of websites,
+                        so that you don't need to spend a penny more than necessary. To start, just use the search
+                        bar above to find a book of your choosing. You can search by title, genre, author, the world is
+                        your oyster!
+                    </p>
+                </div>
+                <div id="descriptionBackground"></div>
+            </div>
+        </div>
+        <div class="bookGrid" id="bookGrid">
+            <template>
+                <!-- when a search occurs, the books object in Vue gets filled and this loops through every book-->
+                <div v-for="(book, index) in books" v-if="searchLoaded">
+                    <div class="book" v-on:click="compare(book)">
+                        <img :src="book.image" :alt="book.title">
+                        <p class="bookTitle" :id="'gridTitle' + index"
+                            v-bind:style="{fontSize: getFontSize(book.title, index)}">{{book.title}}</p>
+                        <p class="bookAuthor">by {{book.author}}</p>
+                        <p class="bookFormat">({{book.format}})</p>
+
+                    </div>
+                </div>
+
+                <!-- Pagination buttons -->
+                <div id="nextAndPrev">
+                    <button id="prevButton" v-if="validPrev" v-on:click="previousPage()">Prev</button>
+                    <button id="nextButton" v-if="validNext" v-on:click="nextPage()">Next</button>
+                </div>
+
+                <!-- Comparison header which displays the common information about the book i.e. its title,
+                author, isbn, format and image-->
+                <div id="comparisonBook" v-for="currentComparison in comparisonBook" v-if="comparisonLoaded">
+                    <div id="bookHeader">
+                        <img :src="currentComparison.image" alt="currentComparison.title">
+                        <div id="comparisonInfo">
+                            <div id="comparisonTitleDiv">
+                                <p id="comparisonTitle">{{currentComparison.title}}
+                                    <span id="comparisonAuthor">by {{currentComparison.author}}</span>
+                                </p>
+                            </div>
+                            <div id="comparisonFormatIsbn">
+                                <div>
+                                    <p>Format: {{currentComparison.format}}</p>
+                                </div>
+                                <div>
+                                    <p>ISBN: {{currentComparison.isbn}}</p>
+                                </div>
+                            </div>
+                            <div id="comparisonDescription">
+                                <p>{{currentComparison.description}}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Comparison prices are shown here -->
+                    <div v-for="comparison in comparisons">
+                        <div class="comparison">
+                            <div class="comparisonWebsite">
+                                <img :src="comparison.websiteImage">
+                            </div>
+                            <div class="comparisonPrice">
+                                <p>£{{comparison.price}}</p>
+                            </div>
+                            <div class="comparisonUrl">
+                                <a :href="comparison.website_url">Buy here!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <!-----------Footer section------------>
+    <footer>
+        <!-- social media icons with links to respective pages -->
+        <div class="socials">
+            <a href="https://www.facebook.com" target="_blank"><img src="images/facebookLogo.png" alt="FACEBOOK"></a>
+            <a href="https://www.instagram.com" target="_blank"><img src="images/instagramLogo.png" alt="INSTAGRAM"></a>
+            <a href="https://www.twitter.com" target="_blank"><img src="images/twitterLogo.png" alt="TWITTER"></a>
+            <a href="https://www.linkedin.com" target="_blank"><img src="images/linkedinLogo.png" alt="LINKEDIN"></a>
+        </div>
+
+        <!-- small text at the bottom with privacy and copyright details -->
+        <div class="policies">
+            <p>Privacy Policy</p>
+            <p>Sitemap</p>
+            <p>© 2021 Uni Project</p>
+        </div>
+
+    </footer>
+
+</div>
+<script>
+    
+    /* Vue object which controls how the data is displayed on 
+    the front-end, and does so in the form of a single page webpage */
+    var app = new Vue({
+        el: '#app',
+        data: {
+            books: [],
+            comparisons: [],
+            comparisonBook: [],
+            searchInput: '',
+            searchLoaded: false,
+            comparisonLoaded: false,
+            validNext: false,
+            validPrev: false,
+            numItems: 12,
+            count: 0,
+            offset: 0
+        },
+        methods: {
+
+            /*
+              Main search function; retrieves the search input from the v-model in the search bar and 
+              passes it into a RESTful /books GET path
+             */
+            getBooksAxios: async function () {
+                try {
+                    /* get all books that satisfy the search term */
+                    let response = await axios.get('/books?num_items=' + this.numItems + '&offset=' + this.offset + '&search=' + this.searchInput);
+                    this.books = response.data.data;
+                    this.count = response.data.count;
+
+                    /* check whether or not to display the prev and next buttons;
+                    if there are not enough items in either direction, that respective 
+                    button won't be displayed (using v-if) */
+                    if (this.offset !== 0) this.validPrev = true;
+                    else this.validPrev = false;
+
+                    if (this.offset + this.numItems < this.count) this.validNext = true;
+                    else this.validNext = false;
+
+                    /* hide description if it is still showing */
+                    if (!document.getElementById("description").classList.contains("hide"))
+                        document.getElementById("description").classList.toggle("hide");
+
+                    /* set v-if variables */
+                    this.searchLoaded = true;
+                    this.comparisonLoaded = false;
+
+                    document.getElementById('searchDiv').style.top = '25px'; /* move the search bar to the top of the screen */
+
+                } catch (ex) {
+                    console.log(ex);
+                }
+            },
+
+            /* Main compare function; retrieves all comparisons that have a given ISBN.
+            This ISBN is passed into this function through the element that it is attached to in the Vue template*/
+            compare: async function (book) {
+
+                /* stop displaying both the pagination buttons and the search page*/
+                this.validNext = false;
+                this.validPrev = false;
+                this.searchLoaded = false;
+
+                this.comparisonBook[0] = {
+                    title: book.title,
+                    description: book.description,
+                    image: book.image,
+                    author: book.author,
+                    format: book.format,
+                    isbn: book.isbn
+                };
+
+                /* retrieve data from database */
+                let comparison = await axios.get('/comparisons?isbn=' + book.isbn);
+
+                for (var i = 0; i < comparison.data.data.length; i++) {
+                    /* display price in 2 decimal places even if it does not have 2 dp */
+                    comparison.data.data[i].price = (Math.round(comparison.data.data[i].price * 100) / 100).toFixed(2);
+
+                    /* get the website name from the comparison url so that the websites picture can be displayed */
+                    comparison.data.data[i].websiteImage =
+                        "images/" + getWebsiteImage(comparison.data.data[i].website_url) + ".png";
+                }
+                /* load comparison up and display the comparison divs */
+                this.comparisons = comparison.data.data;
+                this.comparisonLoaded = true;
+
+            },
+
+            /* 
+            Handles backwards pagination
+            */
+            previousPage: function () {
+                /* checks that subtracting the number of items per 
+                page from the current offset is equal to 0 or more,
+                and changes the offset accordingly */
+                if (this.offset - this.numItems >= 0) {
+                    this.offset -= this.numItems;
+                }
+
+                /* calls the search function to display the appropriate books according to the current offset */
+                this.getBooksAxios();
+            },
+
+            /*
+            Handles forwards pagination
+            */
+            nextPage: function () {
+                /* increases currentOffset by number of items */
+                this.offset += this.numItems;
+
+                /* calls the search function to display the appropriate books according to the current offset */
+                this.getBooksAxios();
+            },
+
+            /* 
+            Calculates an appropriate font size based on string length
+            */
+            getFontSize: function (title, index) {
+                if (title.length > 90)
+                    return 100 + "%";
+                else
+                    return (200 * ((100 - (title.length * 1.25)) / 100)) + 30 + "%";
+            }
+        },
+    });
+
+</script>
+
+</html>

@@ -1,0 +1,496 @@
+* {
+    font-family: "Monaco";
+    box-sizing: border-box;
+}
+
+html {
+    position: relative;
+    clear: both;
+    min-height: 100%;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+
+footer {
+    position: absolute;
+    clear: both;
+    width: 100%;
+    height: 90px;
+    margin-bottom: -200px;
+    line-height: 25px;
+    left: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+}
+
+/* universal font-size for the footer */
+
+footer p, a {
+    font-size: 14px;
+}
+
+footer h {
+    font-size: 18px;
+    padding-top: 10px;
+}
+
+#pageWrapper {
+    background-color: #FDFDFC;
+    min-height: 100vh;
+    margin: auto;
+}
+
+div h1 {
+    text-align: center;
+}
+
+#app {
+    background-image: url('../images/bookBackground.png');
+    min-height: 560px;
+    height: 85%;
+    border-style: solid;
+    padding-bottom: 2.5rem;
+}
+
+.bookFormat {
+    margin-bottom: 0px;
+    text-transform: uppercase;
+    margin-top: 0px;
+}
+
+.bookGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 60px;
+    position: relative;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+    margin-bottom: 70px;
+}
+
+#nextButton, #prevButton {
+    background-color: white;
+    color: purple;
+    font-size: 30px;
+    width: 170px;
+    height: 50px;
+    border-radius: 5%;
+    float: left;
+    margin-right: 15px;
+}
+
+#nextButton:hover, #prevButton:hover, .compareButton:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+.buttonDiv {
+    position: absolute;
+    bottom: 20px;
+    left: 60px;
+    border-style: solid;
+}
+
+.compareButton {
+    position: absolute;
+    border-style: dashed;
+    position: relative;
+    width: 90px;
+
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 0px;
+}
+
+
+.bookFormat {
+    font-size: 18px;
+    color: white;
+}
+
+#nextAndPrev {
+    display: flex;
+    position: absolute;
+    width: fit-content;
+    bottom: -85px;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.book {
+    position: relative;
+    border-style: solid;
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 400px;
+    padding: 10px;
+    transition: transform .2s;
+    cursor: pointer;
+    box-shadow: 10px 10px 5px gray;
+
+}
+
+.book:hover, .comparisonUrl:hover {
+    transform: scale(1.1);
+}
+
+.book p {
+    text-align: center;
+}
+
+.book img {
+    position: relative;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 170px;
+    height: 220px;
+}
+
+.bookTitle {
+    margin-bottom: -15px;
+    color: beige;
+    font-weight: bolder;
+    text-transform: capitalize;
+    text-shadow: 2px 2px 2px purple,
+        3px 3px 1px purple;
+}
+
+.bookAuthor {
+    font-size: 20px;
+    color: beige;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 1px purple;
+}
+
+#bookHeader {
+    border-style: solid;
+    display: flex;
+    height: 324px;
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 5px 5px 5px gray;
+}
+
+#bookHeader img {
+    position: relative;
+    display: block;
+    float: left;
+    width: 280px;
+    height: 320px;
+}
+
+#comparisonInfo {
+    padding: 20px;
+}
+
+#comparisonTitle {
+    font-size: calc(1vw + 4vh);
+    margin-top: 0px;
+    width: 955px;
+    height: 70px;
+
+    color: beige;
+    text-transform: capitalize;
+    text-shadow: 2px 2px 2px purple,
+        3px 3px 3px purple;
+}
+
+#comparisonAuthor {
+    font-size: calc(1vw + 1vh);
+}
+
+#comparisonFormatIsbn {
+    margin-top: -40px;
+    width: 955px;
+    color: white;
+    text-transform: capitalize;
+    text-shadow: 1px 1px 1px purple,
+        2px 2px 1px purple;
+
+}
+
+#comparisonFormatIsbn div {
+    border-style: solid;
+    border-color: black;
+    width: 480px;
+    line-height: 0px;
+    font-size: 35px;
+    display: table-cell;
+    height: 4px;
+}
+
+#comparisonFormatIsbn p {
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#comparisonDescription {
+
+    overflow-y: auto;
+    height: 130px;
+    border-style: solid;
+    padding: 10px;
+
+    margin-top: 7px;
+}
+
+#comparisonDescription p {
+    padding: 5px;
+    font-size: 18px;
+    color: white;
+    text-transform: capitalize;
+    text-shadow: 1px 1px 1px black,
+        2px 2px 1px black;
+
+    margin-top: -5px;
+}
+
+.comparison {
+    display: grid;
+    margin-left: auto;
+    margin-right: auto;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 100px;
+    grid-row-gap: 30px;
+    border-style: solid;
+    margin-top: 20px;
+
+    background-color: rgba(0, 0, 0, 0.2);
+    height: 150px;
+    width: 80%;
+
+}
+
+.comparisonPrice {
+
+
+    border-left-style: solid;
+    border-right-style: solid;
+    font-size: 90px;
+    margin: 0;
+    top: 50%;
+    height: inherit;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.comparisonPrice p {
+    position: relative;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    color: black;
+    font-weight: bold;
+    top: -60px;
+    text-shadow: 1px 1px 1px white,
+        2px 2px 1px;
+}
+
+.comparisonWebsite {
+    height: inherit;
+    width: 100%;
+}
+
+.comparisonWebsite img {
+    display: block;
+    position: relative;
+    margin-left: auto;
+    border-style: double;
+    margin-right: auto;
+    width: fit-content;
+    height: 80%;
+    top: 5%;
+
+}
+
+.comparisonUrl {
+    margin-left: auto;
+    margin-right: auto;
+    transition: transform .2s;
+}
+
+.comparisonUrl a {
+    background-color: rgba(0, 0, 0, 0.15);
+
+    border-style: double;
+    border-color: purple;
+    border-width: thick;
+    padding: 5px;
+    position: relative;
+    font-size: 50px;
+    top: 50px;
+    color: white;
+    text-transform: capitalize;
+    text-shadow: 1px 1px 1px purple,
+        2px 2px 1px purple;
+}
+
+/* ------------------------------------------------ */
+
+/*HEADER*/
+
+/* colour for the whole header and footer; beige */
+
+header, footer {
+    background-color: #757194;
+}
+
+header {
+    height: 155px;
+}
+
+.title {
+    height: 5px;
+}
+
+/* logo styling; sets position to the top left of the page and in the header; */
+
+.logo, .logo img {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    width: 150px;
+    height: 125px;
+}
+
+.logo {
+    position: relative;
+    border-style: solid;
+    width: 155px;
+    height: 130px;
+    top: 10px;
+    margin-bottom: auto;
+}
+
+#searchDiv {
+    width: fit-content;
+    height: fit-content;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    top: 190px;
+    transition: transform .2s;
+}
+
+#searchBar {
+    transition: transform .2s;
+    position: relative;
+    width: 615px;
+    height: 70px;
+    border: none;
+    font-size: 20px;
+}
+
+#searchBar div {
+    height: 54px;
+    border-style: solid;
+    margin-right: 10px;
+    background-color: rgba(0, 0, 0, 0.15);
+}
+
+#searchBar input[type=text] {
+    padding: 6px;
+    height: 50px;
+    width: 540px;
+    font-size: 20px;
+}
+
+#searchButton {
+    float: right;
+    width: 60px;
+    height: 49px;
+}
+
+#description {
+    position: relative;
+    width: 600px;
+    height: 150px;
+    margin-left: auto;
+    margin-right: auto;
+    left: -5px;
+    border-style: solid;
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+#descriptionPara {
+    color: white;
+    font-weight: bold;
+    font-size: 17px;
+    text-shadow: 1px 1px 1px black,
+        2px 2px 1px black;
+}
+
+#descriptionBackground {
+    position: relative;
+    width: 615px;
+    height: 150px;
+    top: -150px;
+    left: 0px;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+
+
+.socials {
+    position: absolute;
+    width: 16%;
+    left: 45%;
+    bottom: 60px;
+    padding: 0px;
+    border-style: none;
+    top: 10px;
+}
+
+.socials h {
+    float: left;
+    width: 100%;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.socials img {
+    float: left;
+    padding-right: 10px;
+    width: 40px;
+    height: 30px;
+}
+
+/* policies section in the footer; contains privacy policy, sitemap and copyright info */
+
+.policies {
+    position: absolute;
+    width: 25%;
+    left: 37.5%;
+    bottom: 10px;
+    padding: 0px;
+    border-style: solid;
+    text-align: center;
+}
+
+.policies p {
+    margin: auto;
+    display: inline-block;
+    padding-right: 20px;
+    font-size: 12px;
+    text-align: center;
+}
+
+.hide {
+    visibility: hidden;
+    display: none;
+}

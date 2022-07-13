@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+  <session-factory>
+    <!-- Database connection properties - Driver, URL, user, password -->
+    <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+    <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/comparison_website?serverTimezone=UTC</property>
+    <property name="hibernate.connection.username">root</property>
+    <property name="hibernate.connection.password"/>
+    <!-- Connection Pool Size -->
+    <property name="hibernate.connection.pool_size">5</property>
+    <!-- org.hibernate.HibernateException: No CurrentSessionContext configured! -->
+    <property name="hibernate.current_session_context_class">thread</property>
+    <!-- Outputs the SQL queries, should be disabled in Production -->
+    <property name="hibernate.show_sql">true</property>
+    <!-- Different RDBMSs have variations in the SQL that they support - specify MySQL-->
+    <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+    <mapping class="eu.samcdonovan.data.Book"/>
+    <mapping class="eu.samcdonovan.data.BookInstance"/>
+    <mapping class="eu.samcdonovan.data.Comparison"/>
+  
+  </session-factory>
+</hibernate-configuration>
